@@ -8,7 +8,6 @@
 
 body
 {
-  overflow: hidden;
   margin: 0px;
   padding: 0px;
   font-family: 'Prosto One', cursive;
@@ -16,14 +15,14 @@ body
   _background: #eee;
 }
 
-#create-project-form
+.simple-box
 {
   display: inline-block;
   color: #777;
   border: 0px solid #afafaf;
   width: 30%;
   margin-left: 10%;
-  margin-top: 120px;
+  margin-top: 60px;
   text-align: center;
   padding: 40px;
   padding-top: 20px;
@@ -32,14 +31,22 @@ body
   background: rgba(255, 255, 255, 0.6);
 }
 
-#current-projects
+.simple-box-text
 {
-  display: inline-block;
+  font-family: "Sofia", sans-serif;
+  text-align: left;
+  
+}
+
+.big-box
+{
+  display: block;
   color: #777;
   border: 0px solid #afafaf;
-  width: 30%;
+  width: 80%;
   margin-left: 10%;
-  margin-top: 120px;
+  margin-top: 40px;
+  margin-bottom: 100px;
   text-align: center;
   padding: 40px;
   padding-top: 20px;
@@ -68,9 +75,61 @@ input[type="submit"]
   border: 0px solid transparent;
   outline: none;
   cursor: pointer;
+  background: #51AC74;
 }
 
-#create-project
+.simple-box table
 {
-  background: #51AC74;
+  width: 100%;
+}
+
+.simple-box table td
+{
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+table
+{
+  border-spacing: 0;
+}
+
+.simple-box table th
+{
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+table thead th
+{
+  background: #e5e5e5;
+  border: 1px solid #e3e3e3;
+}
+
+table td
+{
+  border: 1px solid #e3e3e3;
+  text-align: center;
+}
+
+.big-box table 
+{
+  display: inline-block;
+  padding: 15px;
+}
+
+.big-box table td 
+{
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.big-box table th 
+{
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
