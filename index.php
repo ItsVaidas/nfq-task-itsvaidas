@@ -3,22 +3,33 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+include "./system/Project.php";
+include "./system/Groups.php";
+include "./system/Student.php";
+include "./system/Group.php";
+include "./system/Students.php";
 include "./system/mysqlapi.php";
+
 $mysqlapi = new mysqlapi();
 
 $req_uri = $_SERVER['REQUEST_URI'];
 if (isset($req_uri))
-  $page = explode("/", $req_uri)[1];
+  $id = explode("/", $req_uri)[1];
 
 if (isset($_POST['create-project'])) {
   $project_name = trim($_POST['project_name']);
   $number_of_groups = trim($_POST['number_of_groups']);
   $number_of_members = trim($_POST['number_of_members']);
   
-  $mysqlapi->createNewGroup($project_name, $number_of_groups, $number_of_members);
+  $mysqlapi->createNewProject($project_name, $number_of_groups, $number_of_members);
+}
+if (isset($_POST['add-student'])) {
+  $student_name = trim($_POST['student_name']);
+  
+  $mysqlapi->addNewStudent($id, $student_name);
 }
 
-if (isset($page) && $page != "") {
+if (isset($id) && $id != "") {
   $project = $mysqlapi->getProject($id);
   if ($project == null) {
     header("Location: /");
@@ -31,7 +42,7 @@ if (isset($page) && $page != "") {
 </head>
 
 <?php 
-if (!isset($page) || $page == "") {
+if (!isset($id) || $id == "") {
 ?>
 
 <div class="simple-box">
@@ -73,9 +84,9 @@ die();
 <div class="simple-box">
   <h3>Project status</h3>
   <div class="simple-box-text">
-    <h5>Name: <b>TEST</b></h5>
-    <h5>Number of groups: <b>TEST</b></h5>
-    <h5>Students per group: <b>TEST</b></h5>
+    <h5>Name: <b><?php echo $project->getName(); ?></b></h5>
+    <h5>Number of groups: <b><?php echo $project->getNumberOfGroups(); ?></b></h5>
+    <h5>Students per group: <b><?php echo $project->getStudentsPerGroup(); ?></b></h5>
   </div>
 </div>
 
@@ -92,24 +103,18 @@ die();
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Student1</td>
-          <td>Group1</td>
-          <td>delete</td>
-        </tr>
-        <tr>
-          <td>Student1</td>
-          <td>Group1</td>
-          <td>delete</td>
-        </tr>
-        <tr>
-          <td>Student</td>
-          <td>Group</td>
-          <td>delete</td>
-        </tr>
+      <?php
+        foreach($project->getAllStudents() as $student) {
+          echo "<tr>
+                  <td>{$student->getName()}</td>
+                  <td>".($student->getGroupID() == "" ? "..." : "Group #".$student->getGroupID())."</td>
+                  <td>delete</td>
+                </tr>";
+        }
+      ?>
       </tbody>
     </table>
-    <input type="submit" name="add_student" value="Add new Student"/>
+    <input id="myBtn" type="submit" name="add_student" value="Add new Student"/>
   </div>
 </div>
 
@@ -117,10 +122,13 @@ die();
 <div class="big-box">
   <h3>Project groups</h3>
   <div class="simple-box-text">
+    <?php
+    foreach ($project->getAllGroups() as $group) {
+    ?>
     <table>
       <thead>
         <tr>
-          <th>Group #1</th>
+          <th>Group #<?php echo $group->getID(); ?></th>
         </tr>
       </thead>
       <tbody>
@@ -157,6 +165,26 @@ die();
       </tbody>
     </table>
     
-    
+    <?php
+    }
+    ?>
   </div>
 </div>
+
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="big-box">
+      <h3>Add new Student</h3>
+      <form action="#" method="POST">
+        <input type="text" name="student_name" placeholder="Full name" required/>
+        <br>
+        <input type="submit" name="add-student" value="Add student" />
+      </form>
+    </div>
+  </div>
+
+</div>
+<script src="./assets/js/modal.js"></script>

@@ -13,7 +13,25 @@ class Project {
     $this->students = $students;
   }
   
-  function
+  function getName() {
+    return $this->name;
+  }
+  
+  function getNumberOfGroups() {
+    return $this->groups->getSize();
+  }
+  
+  function getStudentsPerGroup() {
+    return $this->groups->getLimit();
+  }
+  
+  function getAllStudents() {
+    return $this->students->getAll();
+  }
+  
+  function getAllGroups() {
+    return $this->groups->getGroups();
+  }
   
   
 }
