@@ -23,4 +23,12 @@ class Students {
         $this->students[$student] = null;
     }
   }
+  
+  function getStudentByName($student_name) {
+    foreach ($this->students as $student) {
+      if ($student->getName() == $student_name)
+        return $student;
+    }
+    return null;
+  }
 }

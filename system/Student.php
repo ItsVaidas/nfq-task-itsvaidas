@@ -18,5 +18,8 @@ class Student {
     return $this->group;
   }
   
+  function setGroup($id) {
+    $this->group = $id;
+  }
   
 }

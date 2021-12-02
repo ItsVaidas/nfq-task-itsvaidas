@@ -56,11 +56,19 @@ class Project {
     return $this->groups->getGroups();
   }
   
-  function addStudent($student_name) {
-    $this->mysqli->addNewStudent($this->id, $student_name);
+  function addToGroup($id, $student_name) {
+    $this->mysqli->addToGroup($id, $student_name);
     
-    $student = new Student($student_name, null);
-    $this->students->addStudent($student);
+    $student = $this->students->getStudentByName($student_name);
+    $student->setGroup($id);
+    $this->groups->addStudentByGroup($id, $student);
+  }
+  
+  function addStudent($student_name) {
+    if ($this->mysqli->addNewStudent($this->id, $student_name)) {
+      $student = new Student($student_name, null);
+      $this->students->addStudent($student);
+    }
   }
   
   function removeStudent($student_name) {

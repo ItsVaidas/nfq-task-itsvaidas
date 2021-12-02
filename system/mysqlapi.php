@@ -23,7 +23,7 @@ class mysqlapi {
   }
   
   function addNewStudent($id, $name) {
-    mysqli_query($this->connection, "INSERT INTO `students`(`name`, `project`) VALUES ('$name',$id)");
+    return mysqli_query($this->connection, "INSERT INTO `students`(`name`, `project`) VALUES ('$name',$id)");
   }
   
   function removeStudent($id, $name) {
@@ -49,6 +49,10 @@ class mysqlapi {
   
   function getGroupsInfo($id) {
     return mysqli_query($this->connection, "SELECT * FROM `groups` WHERE `project`=$id");
+  }
+  
+  function addToGroup($id, $name) {
+    mysqli_query($this->connection, "UPDATE `students` SET `project_group`=$id WHERE `name`='$name'");
   }
   
   function __destruct() {

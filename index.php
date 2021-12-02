@@ -112,7 +112,7 @@ die();
         foreach($project->getAllStudents() as $student) {
           echo "<tr>
                   <td>{$student->getName()}</td>
-                  <td>".($student->getGroupID() == "" ? "..." : "Group #".$student->getGroupID())."</td>
+                  <td><div id='replace-{$student->getName()}'>".($student->getGroupID() == "" ? "..." : "Group #".$student->getGroupID())."</div></td>
                   <td><a href='/$id/del/{$student->getName()}'>delete</a></td>
                 </tr>";
         }
@@ -137,36 +137,36 @@ die();
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
-            <select name="assign-student">
-              <option selected disabled>Assign student</option>
-              <option value="student1">Student1</option>
-              <option value="student2">Student2</option>
-              <option value="student2">Student2</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <select name="assign-student">
-              <option selected disabled>Assign student</option>
-              <option value="student1">Student1</option>
-              <option value="student2">Student2</option>
-              <option value="student2">Student2</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <select name="assign-student">
-              <option selected disabled>Assign student</option>
-              <option value="student1">Student1</option>
-              <option value="student2">Student2</option>
-              <option value="student2">Student2</option>
-            </select>
-          </td>
-        </tr>
+      <?php
+      $i = 0;
+      foreach ($project->getAllStudents() as $student) {
+        if ($student->getGroupID() == $group->getID()) {
+          echo "<tr><td>{$student->getName()}</td></tr>";
+          $i++;
+        }
+      }
+      for (; $i < $project->getStudentsPerGroup(); $i++) {
+        ?>
+          <tr>
+            <td>
+              <div id="<?php echo $group->getID().'-'.$i; ?>-replace">
+                <select name="assign-student" id="<?php echo $group->getID().'-'.$i; ?>" onchange="assignStudent(<?php echo $id; ?>, <?php echo $group->getID(); ?>, <?php echo $i; ?>)">
+                  <option selected disabled>Assign student</option>
+                  <?php
+                  foreach($project->getAllStudents() as $student) {
+                    if ($student->getGroupID() == null) {
+                      $nameForClass = str_replace(" ", "", $student->getName());
+                      echo "<option class='remove-option' value='{$student->getName()}'>{$student->getName()}</option>";
+                    }
+                  }
+                  ?>
+                </select>
+              </div>
+            </td>
+          </tr>
+        <?php
+      }
+      ?>
       </tbody>
     </table>
     
@@ -193,3 +193,4 @@ die();
 
 </div>
 <script src="./assets/js/modal.js"></script>
+<script src="./assets/js/assignStudents.js"></script>
