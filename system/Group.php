@@ -15,6 +15,10 @@ class Group {
     $this->students->addStudent($student);
   }
   
+  function removeStudent($student_name) {
+    $this->students->removeStudent($student_name);
+  }
+  
   function getID() {
     return $this->id;
   }

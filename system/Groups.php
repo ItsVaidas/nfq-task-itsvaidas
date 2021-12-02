@@ -24,6 +24,12 @@ class Groups {
         $group->addStudent($student);
   }
   
+  function removeStudent($student_name) {
+    foreach ($this->groups as $group) {
+      $group->removeStudent($student_name);
+    }
+  }
+  
   function getGroups() {
     return $this->groups;
   }

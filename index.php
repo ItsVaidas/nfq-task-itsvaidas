@@ -23,18 +23,23 @@ if (isset($_POST['create-project'])) {
   
   $mysqlapi->createNewProject($project_name, $number_of_groups, $number_of_members);
 }
-if (isset($_POST['add-student'])) {
-  $student_name = trim($_POST['student_name']);
-  
-  $mysqlapi->addNewStudent($id, $student_name);
-}
 
 if (isset($id) && $id != "") {
-  $project = $mysqlapi->getProject($id);
-  if ($project == null) {
+  if (!$mysqlapi->checkIfProjectExist($id)) {
     header("Location: /");
     die();
   }
+  $project = new Project($id);
+}
+
+if (isset($_POST['add-student'])) {
+  $student_name = trim($_POST['student_name']);
+  $project->addStudent($student_name);
+}
+if (isset(explode("/", $req_uri)[2]) && explode("/", $req_uri)[2] == "del") {
+  $student_name = str_replace("%20", " ", explode("/", $req_uri)[3]);
+  $project->removeStudent($student_name);
+  header("Location: /$id");
 }
 ?>
 <head>
@@ -108,7 +113,7 @@ die();
           echo "<tr>
                   <td>{$student->getName()}</td>
                   <td>".($student->getGroupID() == "" ? "..." : "Group #".$student->getGroupID())."</td>
-                  <td>delete</td>
+                  <td><a href='/$id/del/{$student->getName()}'>delete</a></td>
                 </tr>";
         }
       ?>

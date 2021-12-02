@@ -17,9 +17,9 @@ class Students {
     return $this->students;
   }
   
-  function removeStudent($name) {
+  function removeStudent($student_name) {
     foreach ($this->students as $student) {
-      if ($student->getName() == $name)
+      if ($student->getName() == $student_name)
         $this->students[$student] = null;
     }
   }
